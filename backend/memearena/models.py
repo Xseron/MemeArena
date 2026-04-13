@@ -13,3 +13,19 @@ class Situation(models.Model):
     text = models.TextField()
     def __str__(self):
         return self.text
+    
+class Meme(models.Model):
+    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    situation = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='memes/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Vote(models.Model):
+    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
+    voter = models.ForeignKey(User, on_delete=models.CASCADE)
+    meme = models.ForeignKey(Meme, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['room', 'voter']
