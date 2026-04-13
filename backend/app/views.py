@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import GameRoom, Meme, Vote, Situation
-from ..app.serializers import *
+from .serializers import *
 
 class GameRoomViewSet(viewsets.ModelViewSet):
     queryset = GameRoom.objects.all()
