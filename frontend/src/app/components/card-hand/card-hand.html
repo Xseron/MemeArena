@@ -1,0 +1,69 @@
+<div class="stage" #stage>
+  <div class="timer">{{ tickSeconds() }}s</div>
+
+  <div class="hand hand--you">
+    @for (c of handOf('you'); track track($index, c)) {
+      <button
+        #handEl
+        type="button"
+        class="card card--you"
+        [class.card--selected]="selectedId() === c.id"
+        [attr.data-id]="c.id"
+        [style.--hue]="c.meme.hue"
+        (click)="select(c.id, 'you')"
+      >
+        <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
+        <span class="card__title">{{ c.meme.title }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="hand hand--top">
+    @for (c of handOf('top'); track track($index, c)) {
+      <div #handEl class="card card--back" [attr.data-id]="c.id">
+        <span class="card__back">?</span>
+      </div>
+    }
+  </div>
+
+  <div class="hand hand--left">
+    @for (c of handOf('left'); track track($index, c)) {
+      <div #handEl class="card card--back" [attr.data-id]="c.id">
+        <span class="card__back">?</span>
+      </div>
+    }
+  </div>
+
+  <div class="hand hand--right">
+    @for (c of handOf('right'); track track($index, c)) {
+      <div #handEl class="card card--back" [attr.data-id]="c.id">
+        <span class="card__back">?</span>
+      </div>
+    }
+  </div>
+
+  <div class="flight-layer">
+    @for (c of flying(); track track($index, c)) {
+      <div
+        #flyEl
+        class="card card--fly"
+        [attr.data-id]="c.id"
+        [style.--hue]="c.meme.hue"
+      >
+        <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
+        <span class="card__title">{{ c.meme.title }}</span>
+      </div>
+    }
+  </div>
+
+  @for (c of onTable(); track track($index, c)) {
+    <div
+      class="card card--table"
+      [style.--hue]="c.meme.hue"
+      [style.transform]="tableTransform(c)"
+    >
+      <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
+      <span class="card__title">{{ c.meme.title }}</span>
+    </div>
+  }
+</div>

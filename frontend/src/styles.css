@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #0b0712;
+  --ink: #f4ecff;
+  --muted: #8a7ab0;
+  --acid: #d6ff3d;
+  --hot: #ff2d8f;
+  --cyan: #35f0ff;
+  --gold: #ffc857;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: transparent;
+  color: var(--ink);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
