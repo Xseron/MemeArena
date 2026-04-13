@@ -11,16 +11,17 @@ class GameRoom(models.Model):
     
 class Situation(models.Model):
     text = models.TextField()
+   
     def __str__(self):
         return self.text
     
 class Meme(models.Model):
-    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
+    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE, related_name="memes")
     player = models.ForeignKey(User, on_delete=models.CASCADE)
-    situation = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='memes/')
+    situation = models.ForeignKey(Situation, on_delete=models.CASCADE, related_name="memes")
+    image = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+   
 
 class Vote(models.Model):
     room = models.ForeignKey(GameRoom, on_delete=models.CASCADE)
