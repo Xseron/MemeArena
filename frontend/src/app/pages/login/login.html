@@ -1,0 +1,38 @@
+<section class="login">
+  <h1>MemeArena</h1>
+  <nav class="tabs">
+    <button
+      type="button"
+      [class.active]="mode() === 'login'"
+      (click)="setMode('login')"
+    >Login</button>
+    <button
+      type="button"
+      [class.active]="mode() === 'register'"
+      (click)="setMode('register')"
+    >Register</button>
+  </nav>
+
+  <form (submit)="$event.preventDefault(); submit()">
+    <label>
+      Username
+      <input name="username" [(ngModel)]="username" autocomplete="username" required />
+    </label>
+    <label>
+      Password
+      <input
+        name="password"
+        type="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        required
+      />
+    </label>
+    @if (error()) {
+      <p class="err">{{ error() }}</p>
+    }
+    <button type="submit" [disabled]="busy()">
+      {{ mode() === 'login' ? 'Log in' : 'Create account' }}
+    </button>
+  </form>
+</section>

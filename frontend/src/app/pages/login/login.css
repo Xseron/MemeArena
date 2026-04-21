@@ -1,0 +1,28 @@
+.login {
+  max-width: 360px;
+  margin: 8vh auto;
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+}
+.login h1 { text-align: center; margin-bottom: 16px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.tabs button {
+  flex: 1;
+  padding: 8px;
+  background: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.tabs button.active { background: #333; color: #fff; }
+form { display: flex; flex-direction: column; gap: 12px; }
+label { display: flex; flex-direction: column; font-size: 14px; }
+input { padding: 6px; font: inherit; border: 1px solid #ccc; }
+.err { color: #b00; margin: 0; }
+button[type='submit'] {
+  padding: 10px;
+  background: #222;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button[type='submit']:disabled { opacity: 0.5; }

@@ -1,0 +1,29 @@
+<section class="game">
+  <header>
+    <h1>MemeArena</h1>
+    <button type="button" class="logout" (click)="logout()">Log out</button>
+  </header>
+
+  <p class="status">Status: <strong>{{ state.status() }}</strong></p>
+
+  <h3>Players ({{ state.players().length }}/4)</h3>
+  <div class="players">
+    @for (p of state.players(); track p.id) {
+      <app-player-badge [player]="p"></app-player-badge>
+    }
+    @if (state.players().length === 0) {
+      <em>no one yet</em>
+    }
+  </div>
+
+  @if (state.currentRound(); as r) {
+    <section class="round">
+      <h3>Round {{ r.number }}/8 — phase: {{ r.phase }}</h3>
+      <p>Time left: <app-timer [deadline]="r.phase_deadline"></app-timer></p>
+    </section>
+  } @else if (state.status() === 'waiting') {
+    <p>Waiting for players…</p>
+  } @else if (state.status() === 'finished') {
+    <p>Game over — resetting in 10s…</p>
+  }
+</section>

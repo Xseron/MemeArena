@@ -1,0 +1,28 @@
+.game {
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 16px;
+  font-family: system-ui, sans-serif;
+}
+.game header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logout {
+  background: transparent;
+  border: 1px solid #888;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.players {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.round {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f7f7f7;
+  border-radius: 6px;
+}

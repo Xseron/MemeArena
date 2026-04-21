@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CardHandComponent } from './components/card-hand/card-hand';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CardHandComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
