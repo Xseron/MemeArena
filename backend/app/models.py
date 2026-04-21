@@ -11,11 +11,14 @@ class GameRoom(models.Model):
     
 class Situation(models.Model):
     text = models.TextField()
-   
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='situations')
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.text
     
 class Meme(models.Model):
+    caption = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     room = models.ForeignKey(GameRoom, on_delete=models.CASCADE, related_name="memes")
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     situation = models.ForeignKey(Situation, on_delete=models.CASCADE, related_name="memes")
