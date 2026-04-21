@@ -44,3 +44,34 @@ class Round(models.Model):
 
     def __str__(self):
         return f'Round {self.number} [{self.phase}]'
+
+
+class Situation(models.Model):
+    text = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='situations')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text[:80]
+
+
+class Meme(models.Model):
+    title = models.CharField(max_length=100, default='Untitled meme')
+    image_url = models.URLField(default='https://example.com/default.jpg')
+    caption = models.CharField(max_length=255, default='No caption')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memes')
+    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE, related_name='memes')
+    situation = models.ForeignKey(Situation, on_delete=models.CASCADE, related_name='memes')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Vote(models.Model):
+    room = models.ForeignKey(GameRoom, on_delete=models.CASCADE, related_name='votes')
+    voter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cast_votes')
+    meme = models.ForeignKey(Meme, on_delete=models.CASCADE, related_name='votes')
+
+    class Meta:
+        unique_together = ('room', 'voter')
