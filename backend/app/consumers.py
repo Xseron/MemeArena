@@ -13,7 +13,6 @@ log = logging.getLogger(__name__)
 
 GROUP_NAME = 'game'
 
-
 def _serialize_state() -> dict:
     room = game.get_room()
     players = [{'id': u.id, 'username': u.username} for u in room.players.all()]

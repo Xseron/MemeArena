@@ -55,6 +55,17 @@ class Situation(models.Model):
         return self.text[:80]
 
 
+class MemeCard(models.Model):
+    title = models.CharField(max_length=100)
+    # Relative path under frontend/public/, e.g. "/memes/giga.png"
+    image_url = models.CharField(max_length=255)
+    caption = models.CharField(max_length=255, blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Meme(models.Model):
     title = models.CharField(max_length=100, default='Untitled meme')
     image_url = models.URLField(default='https://example.com/default.jpg')
