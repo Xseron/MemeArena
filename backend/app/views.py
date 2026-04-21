@@ -91,6 +91,7 @@ def vote_for_meme(request, meme_id):
     return Response(serializer.data, status=201)
 
 
+
 # =========================
 # CBV 1: Room List/Create
 # =========================
