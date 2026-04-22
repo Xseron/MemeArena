@@ -15,6 +15,10 @@ RESET_DELAY_SECONDS = 10
 HAND_SIZE = 5
 
 
+
+
+
+
 def get_room() -> GameRoom:
     return GameRoom.objects.get(pk=1)
 
