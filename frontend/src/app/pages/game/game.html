@@ -1,29 +1,37 @@
-<section class="game">
-  <header>
-    <h1>MemeArena</h1>
-    <button type="button" class="logout" (click)="logout()">Log out</button>
-  </header>
+@if (state.status() === 'waiting') {
+  <app-waiting-room
+    [players]="state.players()"
+    [youId]="state.youId()"
+    (kick)="onKick($event)"
+  />
+} @else if (state.status() === 'finished' && state.finalScores(); as fs) {
+  <app-final-screen
+    [scores]="fs"
+    [players]="state.players()"
+    [roundSummaries]="state.roundSummaries() ?? []"
+  />
+} @else if (state.currentRound(); as r) {
+  <app-card-hand
+    [phase]="r.phase"
+    [roundNumber]="r.number"
+    [situation]="r.situation"
+    [phaseDeadline]="r.phase_deadline"
+    [yourHand]="r.your_hand"
+    [yourUsername]="yourUsername()"
+    [otherPlayers]="otherPlayers()"
+    [players]="state.players()"
+    [submissions]="r.submissions"
+    [youSubmitted]="r.you_submitted"
+    [youVoted]="r.you_voted"
+    [winnerSubmissionId]="r.winner_submission_id"
+    [voteCounts]="r.vote_counts"
+    (pickCard)="onPickCard($event)"
+    (voteSubmission)="onVoteSubmission($event)"
+  />
+  <button type="button" class="logout-overlay" (click)="logout()">Log out</button>
+  <button type="button" class="stop-overlay" (click)="stopGame()">Stop</button>
+}
 
-  <p class="status">Status: <strong>{{ state.status() }}</strong></p>
-
-  <h3>Players ({{ state.players().length }}/4)</h3>
-  <div class="players">
-    @for (p of state.players(); track p.id) {
-      <app-player-badge [player]="p"></app-player-badge>
-    }
-    @if (state.players().length === 0) {
-      <em>no one yet</em>
-    }
-  </div>
-
-  @if (state.currentRound(); as r) {
-    <section class="round">
-      <h3>Round {{ r.number }}/8 — phase: {{ r.phase }}</h3>
-      <p>Time left: <app-timer [deadline]="r.phase_deadline"></app-timer></p>
-    </section>
-  } @else if (state.status() === 'waiting') {
-    <p>Waiting for players…</p>
-  } @else if (state.status() === 'finished') {
-    <p>Game over — resetting in 10s…</p>
-  }
-</section>
+@if (errorMsg(); as msg) {
+  <div class="error-toast">{{ msg }}</div>
+}

@@ -1,69 +1,85 @@
 <div class="stage" #stage>
-  <div class="timer">{{ tickSeconds() }}s</div>
+  <header class="overlay">
+    <div class="round-info">Round {{ roundNumber }}/{{ totalRounds }}</div>
+    @if (phaseDeadline) {
+      <div class="timer-wrap"><app-timer [deadline]="phaseDeadline" /></div>
+    }
+    <div class="situation">{{ situation }}</div>
+  </header>
 
   <div class="hand hand--you">
-    @for (c of handOf('you'); track track($index, c)) {
+    @if (yourUsername) {
+      <div class="player-label player-label--you">YOU - {{ yourUsername }}</div>
+    }
+    @for (c of yourHand; track trackCard($index, c)) {
       <button
         #handEl
         type="button"
         class="card card--you"
-        [class.card--selected]="selectedId() === c.id"
+        [class.card--disabled]="phase !== 'submitting' || youSubmitted"
         [attr.data-id]="c.id"
-        [style.--hue]="c.meme.hue"
-        (click)="select(c.id, 'you')"
+        (click)="onPickYou(c.id, handEl)"
       >
-        <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
-        <span class="card__title">{{ c.meme.title }}</span>
+        <img class="card__art" [src]="c.meme_card.image_url" [alt]="c.meme_card.title" draggable="false" />
+        <span class="card__title">{{ c.meme_card.title }}</span>
       </button>
     }
   </div>
 
-  <div class="hand hand--top">
-    @for (c of handOf('top'); track track($index, c)) {
-      <div #handEl class="card card--back" [attr.data-id]="c.id">
-        <span class="card__back">?</span>
-      </div>
-    }
-  </div>
+  @for (p of otherPlayers; track trackPlayer($index, p); let i = $index) {
+    <div
+      class="hand"
+      [class.hand--top]="i === 0"
+      [class.hand--left]="i === 1"
+      [class.hand--right]="i === 2"
+    >
+      <div class="player-label">{{ p.username }}</div>
+      @for (_ of otherHandBacks(); track $index) {
+        <div class="card card--back"><span class="card__back">?</span></div>
+      }
+    </div>
+  }
 
-  <div class="hand hand--left">
-    @for (c of handOf('left'); track track($index, c)) {
-      <div #handEl class="card card--back" [attr.data-id]="c.id">
-        <span class="card__back">?</span>
-      </div>
-    }
-  </div>
-
-  <div class="hand hand--right">
-    @for (c of handOf('right'); track track($index, c)) {
-      <div #handEl class="card card--back" [attr.data-id]="c.id">
-        <span class="card__back">?</span>
-      </div>
+  <div class="table">
+    @for (s of submissions; track trackSub($index, s)) {
+      <button
+        type="button"
+        class="card card--table"
+        [class.card--table-clickable]="phase === 'voting' && !youVoted"
+        [class.card--winner]="isWinner(s.id)"
+        [disabled]="phase !== 'voting' || youVoted"
+        (click)="onVote(s.id)"
+      >
+        <img class="card__art" [src]="s.meme_card.image_url" [alt]="s.meme_card.title" draggable="false" />
+        <span class="card__title">{{ s.meme_card.title }}</span>
+        @if (phase === 'results' || phase === 'done') {
+          <div class="card__meta">
+            <span class="card__author">{{ usernameOf(s.player_id) }}</span>
+            <span class="card__votes">{{ voteCount(s.id) }} 🗳️</span>
+            @if (isWinner(s.id)) { <span class="card__crown">👑</span> }
+          </div>
+        }
+      </button>
     }
   </div>
 
   <div class="flight-layer">
-    @for (c of flying(); track track($index, c)) {
+    @for (f of flying(); track f.id) {
       <div
         #flyEl
         class="card card--fly"
-        [attr.data-id]="c.id"
-        [style.--hue]="c.meme.hue"
+        [attr.data-id]="f.id"
       >
-        <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
-        <span class="card__title">{{ c.meme.title }}</span>
+        <img class="card__art" [src]="f.card.meme_card.image_url" [alt]="f.card.meme_card.title" draggable="false" />
+        <span class="card__title">{{ f.card.meme_card.title }}</span>
       </div>
     }
   </div>
 
-  @for (c of onTable(); track track($index, c)) {
-    <div
-      class="card card--table"
-      [style.--hue]="c.meme.hue"
-      [style.transform]="tableTransform(c)"
-    >
-      <img class="card__art" [src]="c.meme.img" [alt]="c.meme.title" draggable="false" />
-      <span class="card__title">{{ c.meme.title }}</span>
-    </div>
+  @if (phase === 'submitting' && youSubmitted) {
+    <div class="phase-msg">Card submitted, waiting for others…</div>
+  }
+  @if (phase === 'voting' && youVoted) {
+    <div class="phase-msg">Vote accepted, waiting for others…</div>
   }
 </div>

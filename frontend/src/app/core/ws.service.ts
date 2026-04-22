@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { StateMessage } from './models';
+import { ServerMessage } from './models';
 
 const MAX_RECONNECT = 5;
 const RECONNECT_DELAY_MS = 1000;
 
 @Injectable({ providedIn: 'root' })
 export class WsService {
-  readonly message$ = new Subject<StateMessage>();
+  readonly message$ = new Subject<ServerMessage>();
 
   private socket: WebSocket | null = null;
   private token: string | null = null;
@@ -35,9 +35,11 @@ export class WsService {
     this.socket = sock;
     sock.onmessage = (ev) => {
       try {
-        this.message$.next(JSON.parse(ev.data) as StateMessage);
+        const parsed = JSON.parse(ev.data) as ServerMessage;
+        if (parsed?.type !== 'state' && parsed?.type !== 'error') return;
+        this.message$.next(parsed);
       } catch {
-        /* ignore malformed */
+        return;
       }
     };
     sock.onclose = (ev) => {

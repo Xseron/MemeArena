@@ -1,0 +1,31 @@
+<section class="waiting">
+  <h1 class="title">
+    <span>M</span><span>E</span><span>M</span><span>E</span>
+    <span class="gap"></span>
+    <span>A</span><span>R</span><span>E</span><span>N</span><span>A</span>
+  </h1>
+  <p class="subtitle">Waiting for players… <strong>{{ players.length }}/4</strong></p>
+
+  <ul class="slots">
+    @for (slot of slots; track $index) {
+      @if (slot) {
+        <li class="slot slot--filled" [class.slot--you]="slot.id === youId">
+          <span class="dot"></span>
+          <span class="name">{{ slot.username }}</span>
+          @if (slot.id === youId) {
+            <span class="you-badge">you</span>
+          } @else {
+            <button type="button" class="kick" (click)="kick.emit(slot.id)" title="Kick">✕</button>
+          }
+        </li>
+      } @else {
+        <li class="slot slot--empty">
+          <span class="dot dot--empty"></span>
+          <span class="name">waiting…</span>
+        </li>
+      }
+    }
+  </ul>
+
+  <p class="hint">Once 4 players are in — the game will start automatically</p>
+</section>

@@ -9,20 +9,22 @@ import { Component, DestroyRef, Input, OnChanges, SimpleChanges, inject, signal 
 export class TimerComponent implements OnChanges {
   @Input() deadline: string | null = null;
 
-  private destroyRef = inject(DestroyRef);
   private handle: ReturnType<typeof setInterval> | null = null;
 
-  readonly remaining = signal('—');
+  readonly remaining = signal('-');
 
-  ngOnChanges(changes: SimpleChanges): void {
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.stop());
+  }
+
+  ngOnChanges(_changes: SimpleChanges): void {
     this.stop();
     if (!this.deadline) {
-      this.remaining.set('—');
+      this.remaining.set('-');
       return;
     }
     this.tick();
     this.handle = setInterval(() => this.tick(), 100);
-    this.destroyRef.onDestroy(() => this.stop());
   }
 
   private stop(): void {

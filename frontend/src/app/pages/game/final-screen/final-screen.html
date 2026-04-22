@@ -1,0 +1,104 @@
+<section class="final">
+  <div class="final__rays" aria-hidden="true"></div>
+  <div class="final__grain" aria-hidden="true"></div>
+
+  <header class="final__top">
+    <div class="final__kicker">
+      <span class="final__kicker-dot"></span>
+      MEME ARENA — SEASON FINALE
+      <span class="final__kicker-dot"></span>
+    </div>
+
+    @if (champion(); as c) {
+      <h1 class="final__champion-label">CHAMPION</h1>
+      <div class="final__champion-name">{{ c.username }}</div>
+      <div class="final__champion-stats">
+        <span class="final__stat">{{ c.score }} wins</span>
+        <span class="final__stat-sep">/</span>
+        <span class="final__stat">out of {{ wallCards().length }} rounds</span>
+      </div>
+    }
+  </header>
+
+  <div class="podium">
+    @for (slot of podium(); track trackRank($index, slot)) {
+      <div
+        class="podium__slot"
+        [class.podium__slot--1]="slot.place === 1"
+        [class.podium__slot--2]="slot.place === 2"
+        [class.podium__slot--3]="slot.place === 3"
+        [style.--rise-delay]="(3 - slot.place) * 220 + 'ms'"
+      >
+        <div class="podium__medal">{{ slot.medal }}</div>
+        <div class="podium__label">{{ slot.label }}</div>
+        <div class="podium__name">{{ slot.username }}</div>
+        <div class="podium__block">
+          <span class="podium__place">{{ slot.place }}</span>
+          <span class="podium__score">{{ slot.score }} <em>pts</em></span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (remaining().length > 0) {
+    <ol class="leaderboard">
+      @for (row of remaining(); track trackRank($index, row)) {
+        <li class="leaderboard__row">
+          <span class="leaderboard__place">{{ row.place }}</span>
+          <span class="leaderboard__name">{{ row.username }}</span>
+          <span class="leaderboard__dots"></span>
+          <span class="leaderboard__score">{{ row.score }}</span>
+        </li>
+      }
+    </ol>
+  }
+
+  @if (wallCards().length > 0) {
+    <section class="wall">
+      <h2 class="wall__title">
+        <span class="wall__title-mark">★</span>
+        HALL OF WINNERS
+        <span class="wall__title-mark">★</span>
+      </h2>
+      <p class="wall__subtitle">Every round, one meme reigned</p>
+
+      <div class="wall__grid" [class.wall__grid--revealed]="revealed()">
+        @for (card of wallCards(); track trackCard($index, card); let i = $index) {
+          <article
+            class="polaroid"
+            [style.--tilt]="tiltFor(i) + 'deg'"
+            [style.--delay]="i * 90 + 'ms'"
+          >
+            <div class="polaroid__pin" aria-hidden="true"></div>
+            <div class="polaroid__tape" aria-hidden="true"></div>
+            <div class="polaroid__stub">
+              <span class="polaroid__stub-label">ROUND</span>
+              <span class="polaroid__stub-num">{{ card.round_number }}</span>
+            </div>
+            @if (card.winner; as w) {
+              <img
+                class="polaroid__image"
+                [src]="w.meme_card.image_url"
+                [alt]="w.meme_card.title"
+                draggable="false"
+              />
+              <div class="polaroid__caption">
+                <div class="polaroid__situation">"{{ card.situation }}"</div>
+                <div class="polaroid__meta">
+                  <span class="polaroid__title">{{ w.meme_card.title }}</span>
+                  <span class="polaroid__votes">{{ w.votes }} 🗳</span>
+                </div>
+                <div class="polaroid__winner">
+                  <span class="polaroid__winner-crown">👑</span>
+                  {{ w.username }}
+                </div>
+              </div>
+            }
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  <p class="final__footer">The room resets in a few seconds…</p>
+</section>

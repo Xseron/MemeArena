@@ -1,28 +1,61 @@
-.game {
-  max-width: 600px;
-  margin: 24px auto;
-  padding: 16px;
-  font-family: system-ui, sans-serif;
-}
-.game header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logout {
-  background: transparent;
-  border: 1px solid #888;
-  padding: 4px 10px;
+.logout-overlay {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f4ecff;
+  border: 1px solid #8a7ab0;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.players {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.logout-overlay:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: #35f0ff;
 }
-.round {
-  margin-top: 16px;
-  padding: 12px;
-  background: #f7f7f7;
+
+.stop-overlay {
+  position: fixed;
+  top: 16px;
+  right: 96px;
+  z-index: 100;
+  padding: 6px 14px;
+  background: rgba(80, 0, 0, 0.5);
+  color: #ffd0d0;
+  border: 1px solid #ff2d8f;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stop-overlay:hover {
+  background: rgba(120, 0, 0, 0.8);
+  border-color: #ff2d8f;
+  color: #fff;
+}
+
+.error-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  padding: 12px 24px;
+  background: rgba(180, 0, 0, 0.9);
+  color: #fff;
+  border: 1px solid #ff2d8f;
   border-radius: 6px;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 30px rgba(255, 45, 143, 0.5);
+  animation: toast-in 200ms ease-out;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
 }
