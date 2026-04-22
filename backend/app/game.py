@@ -7,6 +7,8 @@ from django.utils import timezone
 
 from .models import GameRoom, MemeCard, PlayerCard, Round, Situation, Submission, Vote
 
+
+COMMADN_SECONDS = 20
 SUBMITTING_SECONDS = 30
 VOTING_SECONDS = 20
 RESULTS_SECONDS = 5
